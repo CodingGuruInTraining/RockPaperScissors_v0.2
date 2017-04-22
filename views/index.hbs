@@ -1,2 +1,31 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
+
+<div id=”rulesDiv”>
+    <p>Welcome to this simple game of ROCK PAPER SCISSORS LIZARD SPOCK!!!</p>
+    <p>Click on the ‘Draw’ button to begin to start the game.</p>
+    <p>After the countdown ends, click on the button corresponding with your weapon of choice.</p>
+    <p>Good luck</p>
+</div>
+
+<div id=”buttonDiv”>
+    <input type=”button” value=”Draw” id=”drawbtn”>
+    <br>
+</div>
+
+<div id=”weaponsDiv”>
+        <!--<span id=”weaponsSpan”>-->
+			<input type=”button” value=”ROCK” id=”rockbtn” class=”weapons”>
+			<input type=”button” value=”PAPER” id=”paperbtn” class=”weapons”>
+			<input type=”button” value=”SCISSORS” id=”scissorbtn” class=”weapons”>
+		<!--</span>-->
+    <input type=”button” value=”LIZARD” id=”lizardbtn” class=”weapons”>
+    <input type=”button” value=”SPOCK” id=”spockbtn” class=”weapons”>
+</div>
+
+<div id=”countdown”></div>
+
+<div id=”messageLog”></div>
+
+<script src=”https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js”></script>
+<script src=”/socket.io/socket.io.js”></script>
