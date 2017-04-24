@@ -6,3 +6,27 @@ body {
 a {
   color: #00B7FF;
 }
+
+button {
+    padding: 15px 8px;
+    margin: 5px;
+    font: 26px Rockwell;
+}
+
+#drawbtn {
+    text-align: center;
+}
+
+#weaponsdiv {
+
+}
+
+#rockbtn {
+    background: url(/public/images/imagenamegoeshere.jpeg);
+                /*might be background-image*/
+
+}
+
+div {
+    font: 20px Rockwell;
+}
