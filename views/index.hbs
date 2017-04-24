@@ -1,5 +1,5 @@
 <h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<!--<p>Welcome to {{title}}</p>-->
 
 <div id=”rulesDiv”>
     <p>Welcome to this simple game of ROCK PAPER SCISSORS LIZARD SPOCK!!!</p>
@@ -14,12 +14,10 @@
 </div>
 
 <div id=”weaponsDiv”>
-        <!--<span id=”weaponsSpan”>-->
-			<button type=”button” value=”ROCK” id=”rockbtn” class=”weapons”>ROCK</button>
-			<button type=”button” value=”PAPER” id=”paperbtn” class=”weapons”>PAPER</button>
-			<button type=”button” value=”SCISSORS” id=”scissorbtn” class=”weapons”>SCISSORS</button>
+    <button type=”button” value=”ROCK” id=”rockbtn” class=”weapons”>ROCK</button>
+    <button type=”button” value=”PAPER” id=”paperbtn” class=”weapons”>PAPER</button>
+    <button type=”button” value=”SCISSORS” id=”scissorbtn” class=”weapons”>SCISSORS</button>
     <br>
-		<!--</span>-->
     <button type=”button” value=”LIZARD” id=”lizardbtn” class=”weapons”>LIZARD</button>
     <button type=”button” value=”SPOCK” id=”spockbtn” class=”weapons”>SPOCK</button>
 </div>
@@ -28,5 +26,13 @@
 
 <div id=”messageLog”></div>
 
+
 <script src=”https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js”></script>
 <script src=”/socket.io/socket.io.js”></script>
+<script src="/javascripts/client_script.js"></script>
+<script src="/javascripts/client_sockets.js"></script>
+
+
+
+<!--used following site to implement jquery:-->
+<!--http://stackoverflow.com/questions/14264429/how-to-use-jquery-installed-with-npm-in-express-app-->

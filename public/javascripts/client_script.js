@@ -1,4 +1,6 @@
-$(function() {
+console.log("start of client script");
+// $(function() {
+    console.log("beginning of client script");
     var socket = io();
     $('.weapons').hide();
     $('#messageLog').empty();
@@ -40,4 +42,5 @@ $(function() {
     function addToLog(aString) {
         $('#messageLog').append("<div class=’msg’>" + aString + "</div>");
     }
-});
+    console.log('end of client script');
+// });
