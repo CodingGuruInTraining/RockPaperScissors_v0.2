@@ -9,7 +9,7 @@ console.log("start of client script");
     $('#drawbtn').click(function () {
         $('#drawbtn').fadeOut();
         gameNumber++;
-        $('#messageLog').append("<br><div class=’msg’>--- Game #" + gameNumber + " ---</div>");
+        $('#messageLog').append("<br><div class='msg'>--- Game #" + gameNumber + " ---</div>");
         var flashers = ["ROCK", "PAPER", "SCISSORS", "LIZARD", "SPOCK"];
         for (var x = 0; x < flashers.length; x++) {
             setTimeout(function () {
@@ -34,13 +34,13 @@ console.log("start of client script");
     }
 
     function messageEvent(msgstr) {
-        $('#messageLog').append("<div class=’msg’>" + msgstr + "</div>");
+        $('#messageLog').append("<div class='msg'>" + msgstr + "</div>");
     }
 
 
     // This function may make more work if you decide to color-code users
     function addToLog(aString) {
-        $('#messageLog').append("<div class=’msg’>" + aString + "</div>");
+        $('#messageLog').append("<div class='msg'>" + aString + "</div>");
     }
     console.log('end of client script');
 // });
