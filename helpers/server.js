@@ -16,8 +16,10 @@ function gameStart(io) {
         socket.on('setUsername', function (username) {
             socket.username = username;
             players.push(socket);
-            socket.broadcast.emit('message', socket.username + ' has joined the game.');
+            // socket.broadcast.emit('message', socket.username + ' has joined the game.');
         });
+
+        socket.broadcast.emit('message', socket.username + ' has joined the game.');
 
         socket.on('selectedWeapon', function (choice) {
             socket.weapon = choice;
