@@ -18,10 +18,7 @@ function gameStart(io) {
         console.log("New connection made.");
 
         socket.on('setUsername', function (username) {
-            // console.log('Server: username is: ' + username);
             socket.username = username;
-            // console.log('Server: socket: ' + socket);
-            // console.log('Server: socket username: ' + socket.username);
             if (socket.username != "" && socket.username != null) {
                 players.push(socket);
                 socket.broadcast.emit('message', socket.username + ' has joined the game.');
@@ -31,8 +28,6 @@ function gameStart(io) {
                 console.log('username: ' + username + ' is no good');
             }
         });
-
-        // socket.broadcast.emit('message', socket.username + ' has joined the game.');
 
         socket.on('selectedWeapon', function (choice) {
             console.log('Server: weapon choice: ' + choice);
@@ -60,34 +55,16 @@ function gameStart(io) {
             }
 
             if (submits == players.length) {
-                // if (rocks.length > 0 && papers.length > 0) {
-                //     emitWins(papers, rocks);
-                // }
-                // if (rocks.length > 0 && scissors.length > 0) {
-                //     emitWins(rocks, scissors);
-                // }
-                // if (papers.length > 0 && scissors.length > 0) {
-                //     emitWins(scissors, papers);
-                // }
-
-
-
-
-
-
-
-
-
-                // if (rocks.length > 0 && (scissors.length > 0 || lizards.length > 0)) { emitWins(rocks, scissors, lizards); }
-                // if (papers.length > 0 && (rocks.length > 0 || spocks.length > 0)) { emitWins(papers, rocks, spocks); }
-                // if (scissors.length > 0 && (papers.length > 0 || lizards.length > 0)) { emitWins( scissors, papers, lizards); }
+                if (rocks.length > 0 && (scissors.length > 0 || lizards.length > 0)) { emitWins(rocks, scissors, lizards); }
+                if (papers.length > 0 && (rocks.length > 0 || spocks.length > 0)) { emitWins(papers, rocks, spocks); }
+                if (scissors.length > 0 && (papers.length > 0 || lizards.length > 0)) { emitWins( scissors, papers, lizards); }
                 if (lizards.length > 0 && (papers.length > 0 || spocks.length > 0)) { emitWins(lizards, papers, spocks); }
-                // if (spocks.length > 0 && (rocks.length > 0 || scissors.length > 0)) { emitWins(spocks, rocks, scissors); }
-                // if (rocks.length > 1) { emitTies(rocks); }
-                // if (papers.length > 1) { emitTies(papers); }
-                // if (scissors.length > 1) { emitTies(scissors); }
-                // if (lizards.length > 1) { emitTies(lizards); }
-                // if (spocks.length > 1) { emitTies(spocks); }
+                if (spocks.length > 0 && (rocks.length > 0 || scissors.length > 0)) { emitWins(spocks, rocks, scissors); }
+                if (rocks.length > 1) { emitTies(rocks); }
+                if (papers.length > 1) { emitTies(papers); }
+                if (scissors.length > 1) { emitTies(scissors); }
+                if (lizards.length > 1) { emitTies(lizards); }
+                if (spocks.length > 1) { emitTies(spocks); }
 
                 submits = 0;
                 rocks.length = 0;
@@ -97,6 +74,11 @@ function gameStart(io) {
                 spocks.length = 0;
             }
         });
+
+        socket.on('disconnect', function(){
+            var spot = players.indexOf(socket);
+            players.splice(spot, 1);
+        })
     });
 }
 	function emitWins(winners, losers, losers2) {
@@ -109,11 +91,7 @@ function gameStart(io) {
             }
             if (losers2.length > 0) {
                 for (var z = 0; z < losers2.length; z++) {
-                    console.log('losers2 length: ' + losers2.length + ' and ' + z);
-                    console.log('which loser: ' + losers2[z].username);
-                    console.log('winner: ' + winners[x].username);
                     my_io.sockets.emit('outcome', winners[x].username + " beats " + losers2[z].username);
-                    console.log('after emit');
                     break;
                 }
             }
@@ -126,7 +104,7 @@ function gameStart(io) {
 			tiersStr += ", " + tiers[x].username;
 		}
 		tiersStr += " and " + tiers[(tiers.length - 1)].username;
-		io.sockets.emit('outcome', tiersStr + " tied with " + tiers[0].weapon);
+		my_io.sockets.emit('outcome', tiersStr + " tied with " + tiers[0].weapon);
 	}
 
 	module.exports = gameStart;

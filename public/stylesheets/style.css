@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url('/images/rpsls.png');
 }
 
 a {
@@ -22,11 +23,15 @@ button {
 }
 
 #rockbtn {
-    /*background-image: url('/public/images/boulder2.jpg');*/
+    background: url('/images/boulder2.jpg');
                 /*might be background-image*/
 
 }
 
 div {
     font: 20px Rockwell;
+}
+
+#countdown {
+    font: 40px Rockwell;
 }

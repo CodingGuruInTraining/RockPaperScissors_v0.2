@@ -1,9 +1,6 @@
-var socket = io();		// may not need if in other js file
-// var script = require('client_script');
+var socket = io();
 
 console.log("client sockets reached");
-
-
 
 $('.weapons').hide();
 $('#messageLog').empty();
@@ -14,16 +11,25 @@ $('#drawbtn').click(function () {
     gameNumber++;
     $('#messageLog').append("<br><div class='msg'>--- Game #" + gameNumber + " ---</div>");
     var flashers = ["ROCK", "PAPER", "SCISSORS", "LIZARD", "SPOCK"];
+console.log('number of array items: ' + flashers.length);
+console.log($('#countdown').innerHTML);
+    console.log($('#countdown').String);
+    console.log($('#countdown').text());
+    // console.log($('#countdown').val());
+    // console.log($('#countdown').valueOf());
+    // console.log($('#countdown').value);
+
     for (var x = 0; x < flashers.length; x++) {
-        setTimeout(function () {
-            $('#countdown').text = flashers[x];
+console.log(flashers[x]);
+        setTimeout(function() {
+            $('.countdown').html(flashers[x]);
         }, 750);
     }
     $('.weapons').fadeIn();
 });
 
 $('.weapons').click(function () {
-    weaponClick($(this));		// function in other js
+    weaponClick($(this));
     $('.weapons').fadeOut();
 });
 
@@ -31,7 +37,6 @@ var username = prompt("Enter your username:");
 while (username == "" || username == null) {
     username = prompt("PLEASE enter your username:");
 }
-// console.log('username is: ' + username);
 socket.emit('setUsername', username);
 
 
