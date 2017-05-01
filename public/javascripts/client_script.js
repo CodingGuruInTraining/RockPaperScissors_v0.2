@@ -1,7 +1,7 @@
 console.log("start of client script");
 $(function() {
     console.log("beginning of client script");
-    var socket = io();
+    // var socket = io();
     $('.weapons').hide();
     $('#messageLog').empty();
     var gameNumber = 0;

@@ -7,7 +7,9 @@ socket.on('message', function(msgstr) {
     messageEvent(msgstr);
 });
 
-socket.on('outcome', outcomeEvent(datastr));		// function in other js
+socket.on('outcome', function(datastr) {
+    outcomeEvent(datastr)
+});		// function in other js
 
 function weaponClick(weapon) {
     socket.emit('selectedWeapon', weapon.attr('value'));		// $(this).attr(‘value’)
