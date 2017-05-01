@@ -10,8 +10,6 @@ var spocks = [];
 var my_io;
 
 function gameStart(io) {
-    // var io = require('socket.io').listen(server);		// not sure if need anymore
-
     my_io = io;
 
     io.sockets.on('connection', function (socket) {
@@ -27,10 +25,10 @@ function gameStart(io) {
 // for testing
                 console.log('username: ' + username + ' is no good');
             }
+            showPlayers();
         });
 
         socket.on('selectedWeapon', function (choice) {
-            console.log('Server: weapon choice: ' + choice);
             socket.weapon = choice;
             console.log('Server: socket weap: ' + socket.weapon);
             submits++;
@@ -54,7 +52,7 @@ function gameStart(io) {
                     break;
             }
 
-            if (submits == players.length) {
+            if (submits === players.length) {
                 if (rocks.length > 0 && (scissors.length > 0 || lizards.length > 0)) { emitWins(rocks, scissors, lizards); }
                 if (papers.length > 0 && (rocks.length > 0 || spocks.length > 0)) { emitWins(papers, rocks, spocks); }
                 if (scissors.length > 0 && (papers.length > 0 || lizards.length > 0)) { emitWins( scissors, papers, lizards); }
@@ -73,11 +71,15 @@ function gameStart(io) {
                 lizards.length = 0;
                 spocks.length = 0;
             }
+            else {
+                waiting();
+            }
         });
 
         socket.on('disconnect', function(){
             var spot = players.indexOf(socket);
             players.splice(spot, 1);
+            showPlayers();
         })
     });
 }
@@ -106,5 +108,14 @@ function gameStart(io) {
 		tiersStr += " and " + tiers[(tiers.length - 1)].username;
 		my_io.sockets.emit('outcome', tiersStr + " tied with " + tiers[0].weapon);
 	}
+
+	function showPlayers() {
+        my_io.sockets.emit('showPlayers', players.length + ' Active Players')
+    }
+
+    function waiting() {
+        var remaining = players.length - submits;
+        my_io.sockets.emit('wait', 'Players waiting on: ' + remaining)
+    }
 
 	module.exports = gameStart;
