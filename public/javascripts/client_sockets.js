@@ -2,6 +2,10 @@ var socket = io();
 
 console.log("client sockets reached");
 
+
+$('#countdown').hide();
+
+
 $('.weapons').hide();
 $('#messageLog').empty();
 var gameNumber = 0;
@@ -19,13 +23,27 @@ console.log($('#countdown').innerHTML);
     // console.log($('#countdown').valueOf());
     // console.log($('#countdown').value);
 
-    for (var x = 0; x < flashers.length; x++) {
-console.log(flashers[x]);
-        setTimeout(function() {
-            $('.countdown').html(flashers[x]);
-        }, 750);
+
+
+//     for (var x = 0; x < flashers.length; x++) {
+// console.log(flashers[x]);
+//         setTimeout(function() {
+//             console.log('im in a function');
+//             $('#countdown').val('update' + x);
+//             // $('.countdown').html(flashers[x]);
+//         }, 3750);
+//     }
+
+
+    for ($('p') in $('#countdown')) {
+        $(this).fadeIn('fast');
     }
+
+
     $('.weapons').fadeIn();
+
+    // $('#countdown').hide();
+
 });
 
 $('.weapons').click(function () {
