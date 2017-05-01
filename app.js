@@ -9,9 +9,11 @@ var routes = require('./routes/index');
 
 var app = express();
 
+// Creates server.
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+// Sends server to helper file.
 var server_code = require('./helpers/server.js')(io);
 
 // view engine setup
@@ -25,7 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+// Implements JQuery on client side.
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 app.use(function(req, res, next) {
