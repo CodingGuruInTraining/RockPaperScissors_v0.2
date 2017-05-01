@@ -31,7 +31,7 @@ var username = prompt("Enter your username:");
 while (username == "" || username == null) {
     username = prompt("PLEASE enter your username:");
 }
-console.log('username is: ' + username);
+// console.log('username is: ' + username);
 socket.emit('setUsername', username);
 
 

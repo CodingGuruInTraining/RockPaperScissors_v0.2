@@ -7,22 +7,27 @@ var scissors = [];
 var lizards = [];
 var spocks = [];
 
+var my_io;
+
 function gameStart(io) {
     // var io = require('socket.io').listen(server);		// not sure if need anymore
+
+    my_io = io;
 
     io.sockets.on('connection', function (socket) {
         console.log("New connection made.");
 
         socket.on('setUsername', function (username) {
-            console.log('Server: username is: ' + username);
+            // console.log('Server: username is: ' + username);
             socket.username = username;
-            console.log('Server: socket: ' + socket);
-            console.log('Server: socket username: ' + socket.username);
+            // console.log('Server: socket: ' + socket);
+            // console.log('Server: socket username: ' + socket.username);
             if (socket.username != "" && socket.username != null) {
                 players.push(socket);
                 socket.broadcast.emit('message', socket.username + ' has joined the game.');
             }
             else {
+// for testing
                 console.log('username: ' + username + ' is no good');
             }
         });
@@ -30,9 +35,12 @@ function gameStart(io) {
         // socket.broadcast.emit('message', socket.username + ' has joined the game.');
 
         socket.on('selectedWeapon', function (choice) {
+            console.log('Server: weapon choice: ' + choice);
             socket.weapon = choice;
+            console.log('Server: socket weap: ' + socket.weapon);
             submits++;
-
+            console.log('Server submits: ' + submits);
+            console.log('Server players: ' + players.length);
             switch (choice) {
                 case "ROCK":
                     rocks.push(socket);		// can it just be the username???
@@ -62,17 +70,25 @@ function gameStart(io) {
                 //     emitWins(scissors, papers);
                 // }
 
-                if (rocks.length > 0 && (scissors.length > 0 || lizards.length > 0)) { emitWins(rocks, scissors, lizards); }
-                if (papers.length > 0 && (rocks.length > 0 || spocks.length > 0)) { emitWins(papers, rocks, spocks); }
-                if (scissors.length > 0 && (papers.length > 0 || lizards.length > 0)) { emitWins( scissors, papers, lizards); }
-                if (lizards.length > 0 && (papers.length > 0 || spocks.length > 0)) { emitWins(lizards, papers, spocks); }
-                if (spocks.length > 0 && (rocks.length > 0 || scissors.length > 0)) { emitWins(spocks, rocks, scissors); }
-                if (rocks.length > 1) { emitTies(rocks); }
-                if (papers.length > 1) { emitTies(papers); }
-                if (scissors.length > 1) { emitTies(scissors); }
-                if (lizards.length > 1) { emitTies(lizards); }
-                if (spocks.length > 1) { emitTies(spocks); }
 
+
+
+                io.sockets.emit('outcome', 'testing, one two');
+
+
+
+
+                if (rocks.length > 0 && (scissors.length > 0 || lizards.length > 0)) { emitWins(rocks, scissors, lizards); }
+                // if (papers.length > 0 && (rocks.length > 0 || spocks.length > 0)) { emitWins(papers, rocks, spocks); }
+                // if (scissors.length > 0 && (papers.length > 0 || lizards.length > 0)) { emitWins( scissors, papers, lizards); }
+                // if (lizards.length > 0 && (papers.length > 0 || spocks.length > 0)) { emitWins(lizards, papers, spocks); }
+                // if (spocks.length > 0 && (rocks.length > 0 || scissors.length > 0)) { emitWins(spocks, rocks, scissors); }
+                // if (rocks.length > 1) { emitTies(rocks); }
+                // if (papers.length > 1) { emitTies(papers); }
+                // if (scissors.length > 1) { emitTies(scissors); }
+                // if (lizards.length > 1) { emitTies(lizards); }
+                // if (spocks.length > 1) { emitTies(spocks); }
+                //
                 submits = 0;
                 rocks.length = 0;
                 papers.length = 0;
@@ -87,13 +103,13 @@ function gameStart(io) {
 		for (var x = 0; x < winners.length; x++) {
 			if (losers.length > 0) {
                 for (var y = 0; y < losers.length; y++) {
-                    io.sockets.emit('outcome', winners[x].username + " beats " + losers[y].username);
+                    my_io.sockets.emit('outcome', winners[x].username + " beats " + losers[y].username);
                     break;
                 }
             }
             if (losers2.length > 0) {
                 for (var z = 0; z < losers2.length; z++) {
-                    io.sockets.emit('outcome', winners[x].username + " beats " + losers[z].username);
+                    my_io.sockets.emit('outcome', winners[x].username + " beats " + losers[z].username);
                     break;
                 }
             }
