@@ -3,7 +3,7 @@ var socket = io();
 console.log("client sockets reached");
 
 
-$('#countdown').hide();
+// $('#countdown').hide();
 
 
 $('.weapons').hide();
@@ -14,11 +14,11 @@ $('#drawbtn').click(function () {
     $('#drawbtn').fadeOut();
     gameNumber++;
     $('#messageLog').append("<br><div class='msg'>--- Game #" + gameNumber + " ---</div>");
-    var flashers = ["ROCK", "PAPER", "SCISSORS", "LIZARD", "SPOCK"];
-console.log('number of array items: ' + flashers.length);
-console.log($('#countdown').innerHTML);
-    console.log($('#countdown').String);
-    console.log($('#countdown').text());
+//     var flashers = ["ROCK", "PAPER", "SCISSORS", "LIZARD", "SPOCK"];
+// console.log('number of array items: ' + flashers.length);
+// console.log($('#countdown').innerHTML);
+//     console.log($('#countdown').String);
+//     console.log($('#countdown').text());
     // console.log($('#countdown').val());
     // console.log($('#countdown').valueOf());
     // console.log($('#countdown').value);
@@ -35,9 +35,9 @@ console.log($('#countdown').innerHTML);
 //     }
 
 
-    for ($('p') in $('#countdown')) {
-        $(this).fadeIn('fast');
-    }
+    // for ($('p') in $('#countdown')) {
+    //     $(this).fadeIn('fast');
+    // }
 
 
     $('.weapons').fadeIn();
