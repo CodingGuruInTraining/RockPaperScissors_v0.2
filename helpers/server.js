@@ -14,12 +14,20 @@ function gameStart(io) {
         console.log("New connection made.");
 
         socket.on('setUsername', function (username) {
+            console.log('Server: username is: ' + username);
             socket.username = username;
-            players.push(socket);
-            // socket.broadcast.emit('message', socket.username + ' has joined the game.');
+            console.log('Server: socket: ' + socket);
+            console.log('Server: socket username: ' + socket.username);
+            if (socket.username != "" && socket.username != null) {
+                players.push(socket);
+                socket.broadcast.emit('message', socket.username + ' has joined the game.');
+            }
+            else {
+                console.log('username: ' + username + ' is no good');
+            }
         });
 
-        socket.broadcast.emit('message', socket.username + ' has joined the game.');
+        // socket.broadcast.emit('message', socket.username + ' has joined the game.');
 
         socket.on('selectedWeapon', function (choice) {
             socket.weapon = choice;
