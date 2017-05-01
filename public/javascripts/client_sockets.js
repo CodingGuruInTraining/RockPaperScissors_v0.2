@@ -3,13 +3,49 @@ var socket = io();		// may not need if in other js file
 
 console.log("client sockets reached");
 
+var msgLog = document.getElementById('#messageLog');
+var drawButton = document.getElementById('#drawbtn');
+var weapons = document.getElementsByClassName('.weapons');
+var countdownDiv = document.getElementById('#countdown');
+
+weapons.style.visibility = "hidden";
+msgLog.empty();
+var gameNumber = 0;
+var flashers = ["ROCK", "PAPER", "SCISSORS", "LIZARD", "SPOCK"];
+
+drawButton.addEventListener('click', function(){
+    drawButton.fadeOut();
+    gameNumber++;
+    msgLog.appendChild("<br><div class='msg'>--- Game #" + gameNumber + " ---</div>");
+    for (var x = 0; x < flashers.length; x++) {
+        setTimeout(function () {
+            countdownDiv.innerHTML = flashers[x];
+        }, 750);
+    }
+    weapons.fadeIn();
+});
+
+weapons.addEventListener('click', function() {
+    socket.emit('selectedWeapon', weapon.attr('value'));
+    weapons.fadeOut();
+});
+
 socket.on('message', function(msgstr) {
-    messageEvent(msgstr);
+    msgLog.appendChild("<div class='msg'>" + msgstr + "</div>div>");
+    // messageEvent(msgstr);
 });
 
 socket.on('outcome', function(datastr) {
-    outcomeEvent(datastr)
+    msgLog.appendChild("<div class='msg'>" + datastr + "</div>");
+    drawButton.fadeIn();
+
+    // outcomeEvent(datastr)
 });		// function in other js
+
+var username = prompt("Enter your username:");
+while (username == "" || username == null) {
+    username = prompt("PLEASE enter your username:");
+}
 
 function weaponClick(weapon) {
     socket.emit('selectedWeapon', weapon.attr('value'));		// $(this).attr(‘value’)
