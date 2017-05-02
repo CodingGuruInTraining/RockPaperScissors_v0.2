@@ -12,6 +12,11 @@ var scissors = [];
 var lizards = [];
 var spocks = [];
 
+
+var fillers = [ " cuts ", " covers ", " crushes ", " poisons ", " smashes ", " decapitates ",
+                " eats ", " disproves ", " vaporizes ", " crushes " ];
+
+
 // Global variable to hold server in order to use in functions.
 var my_io;
 
@@ -65,11 +70,11 @@ function gameStart(io) {
             if (submits === players.length) {
                 // Checks if certain arrays contain items and emits messages
                 // based on the results.
-                if (rocks.length > 0 && (scissors.length > 0 || lizards.length > 0)) { emitWins(rocks, scissors, lizards); }
-                if (papers.length > 0 && (rocks.length > 0 || spocks.length > 0)) { emitWins(papers, rocks, spocks); }
-                if (scissors.length > 0 && (papers.length > 0 || lizards.length > 0)) { emitWins( scissors, papers, lizards); }
-                if (lizards.length > 0 && (papers.length > 0 || spocks.length > 0)) { emitWins(lizards, papers, spocks); }
-                if (spocks.length > 0 && (rocks.length > 0 || scissors.length > 0)) { emitWins(spocks, rocks, scissors); }
+                if (rocks.length > 0 && (scissors.length > 0 || lizards.length > 0)) { emitWins(rocks, scissors, lizards, fillers[9], fillers[2]); }
+                if (papers.length > 0 && (rocks.length > 0 || spocks.length > 0)) { emitWins(papers, rocks, spocks, fillers[1], fillers[7]); }
+                if (scissors.length > 0 && (papers.length > 0 || lizards.length > 0)) { emitWins( scissors, papers, lizards, fillers[0], fillers[5]); }
+                if (lizards.length > 0 && (papers.length > 0 || spocks.length > 0)) { emitWins(lizards, papers, spocks, fillers[6], fillers[3]); }
+                if (spocks.length > 0 && (rocks.length > 0 || scissors.length > 0)) { emitWins(spocks, rocks, scissors, fillers[8], fillers[4]); }
 
                 // Checks which arrays have 2+ items meaning those sockets
                 // tied with each other.
@@ -101,25 +106,58 @@ function gameStart(io) {
         })
     });
 }
-	function emitWins(winners, losers, losers2) {
+	function emitWins(winners, losers, losers2, fillerStr1, fillerStr2) {
         // Loops through the provided arrays and emits messages of who won.
         // Since each weapon can beat 2 other weapon types, both are looped through
         // if there are items in their arrays.
-		for (var x = 0; x < winners.length; x++) {
-			if (losers.length > 0) {
-                for (var y = 0; y < losers.length; y++) {
-                    my_io.sockets.emit('outcome', winners[x].username + " beats " + losers[y].username);
-                    break;
-                }
-            }
-            if (losers2.length > 0) {
-                for (var z = 0; z < losers2.length; z++) {
-                    my_io.sockets.emit('outcome', winners[x].username + " beats " + losers2[z].username);
-                    break;
-                }
-            }
-		}
+
+        var winStr = makeNameString(winners);
+        var outcomeStr = winners[0].weapon + " " + winStr;
+        var losStr = "";
+        var los2Str = "";
+        if (losers.length > 0 && losers2.length > 0) {
+            losStr = makeNameString(losers);
+            los2Str = makeNameString(losers2);
+            outcomeStr += fillerStr1 + losers[0].weapon + " " + losStr + " and" + fillerStr2 +
+                losers2[0].weapon + " " + los2Str;
+        }
+        else if (losers.length > 0) {
+            losStr = makeNameString(losers);
+            outcomeStr += fillerStr1 + losers[0].weapon + " " + losStr;
+        }
+
+        else if (losers2.length > 0) {
+            los2Str = makeNameString(losers2);
+            outcomeStr += fillerStr2 + losers2[0].weapon + " " + los2Str;
+        }
+
+        my_io.sockets.emit('outcome', outcomeStr);
+
+        // for (var x = 0; x < winners.length; x++) {
+		// 	if (losers.length > 0) {
+         //        for (var y = 0; y < losers.length; y++) {
+         //            my_io.sockets.emit('outcome', winners[x].username + " beats " + losers[y].username);
+         //            break;
+         //        }
+         //    }
+         //    if (losers2.length > 0) {
+         //        for (var z = 0; z < losers2.length; z++) {
+         //            my_io.sockets.emit('outcome', winners[x].username + " beats " + losers2[z].username);
+         //            break;
+         //        }
+         //    }
+		// }
 	}
+
+	function makeNameString(array) {
+        var nameString = "(";
+        for (var x = 0; x < array.length - 1; x++) {
+            nameString += array[x].username + ", ";
+        }
+        nameString += array[array.length-1].username + ")";
+
+        return nameString;
+    }
 
 	function emitTies(tiers) {
         // Loops through array and emits message of who tied.
