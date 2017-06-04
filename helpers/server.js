@@ -108,6 +108,12 @@ console.log('player count before slice: ' + players.length);
             players.splice(spot, 1);
 console.log('player count after slice: ' + players.length);
             // delete players[spot];
+
+// todo try if ^ doesn't work
+            // socket.close();
+
+
+
             showPlayers();
         })
     });
