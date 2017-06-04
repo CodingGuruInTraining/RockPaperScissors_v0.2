@@ -103,7 +103,11 @@ console.log('Server players: ' + players.length);
         // Removes socket from array.
         socket.on('disconnect', function(){
             var spot = players.indexOf(socket);
+console.log(socket.username + ' has disconnected');
+console.log('player count before slice: ' + players.length);
             players.splice(spot, 1);
+console.log('player count after slice: ' + players.length);
+            // delete players[spot];
             showPlayers();
         })
     });
