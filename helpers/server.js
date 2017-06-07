@@ -21,13 +21,22 @@ var fillers = [ " cuts ", " covers ", " crushes ", " poisons ", " smashes ", " d
 var my_io;
 
 
+// Declares initial game state.
+var game_in_progress = false;
+
 
 
 function gameStart(io) {
     my_io = io;
     // Connects websockets.
-    io.sockets.on('connection', function (socket) {
+    my_io.sockets.on('connection', function (socket) {
         console.log("New connection made.");
+
+
+/****************
+ * Sets up new Player
+*****************/
+
         // Sets the socket's username attribute and informs the
         // current players that someone has joined.
         socket.on('setUsername', function (username) {
@@ -39,7 +48,12 @@ function gameStart(io) {
             // Updates player counter on client.
             showPlayers();
         });
-        // Main comparison method.
+
+
+
+//*********
+// Main comparison method.
+// ***********//
         socket.on('selectedWeapon', function (choice) {
             // Sets the socket's weapon attribute.
             socket.weapon = choice;
@@ -100,6 +114,12 @@ console.log('Server players: ' + players.length);
                 waiting();
             }
         });
+
+
+
+/****************
+ * Sets up new Player
+ *****************/
         // Removes socket from array.
         socket.on('disconnect', function(){
             var spot = players.indexOf(socket);
@@ -107,12 +127,6 @@ console.log(socket.username + ' has disconnected');
 console.log('player count before slice: ' + players.length);
             players.splice(spot, 1);
 console.log('player count after slice: ' + players.length);
-            // delete players[spot];
-
-// todo try if ^ doesn't work
-            // socket.close();
-
-
 
             showPlayers();
         })
@@ -121,81 +135,87 @@ console.log('player count after slice: ' + players.length);
 
 
 
-	function emitWins(winners, losers, losers2, fillerStr1, fillerStr2) {
-        // Loops through the provided arrays and emits messages of who won.
-        // Since each weapon can beat 2 other weapon types, both are looped through
-        // if there are items in their arrays.
-
-        var winStr = makeNameString(winners);
-        // All strings start with the winning weapon and its users.
-        var outcomeStr = winners[0].weapon + " " + winStr;
-        var losStr = "";
-        var los2Str = "";
-        // Generates a combined string if winner beat both weaker weapons.
-        if (losers.length > 0 && losers2.length > 0) {
-            losStr = makeNameString(losers);
-            los2Str = makeNameString(losers2);
-            outcomeStr += fillerStr1 + losers[0].weapon + " " + losStr + " and" + fillerStr2 +
-                losers2[0].weapon + " " + los2Str;
-        }
-        // Generates a single string if only one of the two arrays has items.
-        else if (losers.length > 0) {
-            losStr = makeNameString(losers);
-            outcomeStr += fillerStr1 + losers[0].weapon + " " + losStr;
-        }
-        else if (losers2.length > 0) {
-            los2Str = makeNameString(losers2);
-            outcomeStr += fillerStr2 + losers2[0].weapon + " " + los2Str;
-        }
-        // Transmits message string.
-        my_io.sockets.emit('outcome', outcomeStr);
-	}
 
 
+/****************
+ * FUNCTIONS!!!!
+ *****************/
 
+function emitWins(winners, losers, losers2, fillerStr1, fillerStr2) {
+    // Loops through the provided arrays and emits messages of who won.
+    // Since each weapon can beat 2 other weapon types, both are looped through
+    // if there are items in their arrays.
 
-	function makeNameString(array) {
-        // Start of username string.
-        var nameString = "(";
-        // Loops through all but last item in array and
-        // adds username to combined string.
-        for (var x = 0; x < array.length - 1; x++) {
-            nameString += array[x].username + ", ";
-        }
-        // Adds last array item (without separator and closes it.
-        nameString += array[array.length-1].username + ")";
-
-        return nameString;
+    var winStr = makeNameString(winners);
+    // All strings start with the winning weapon and its users.
+    var outcomeStr = winners[0].weapon + " " + winStr;
+    var losStr = "";
+    var los2Str = "";
+    // Generates a combined string if winner beat both weaker weapons.
+    if (losers.length > 0 && losers2.length > 0) {
+        losStr = makeNameString(losers);
+        los2Str = makeNameString(losers2);
+        outcomeStr += fillerStr1 + losers[0].weapon + " " + losStr + " and" + fillerStr2 +
+            losers2[0].weapon + " " + los2Str;
     }
-
-
-
-
-	function emitTies(tiers) {
-        // Loops through array and emits message of who tied.
-		var tiersStr = tiers[0].username;
-		for (var x = 1; x < (tiers.length - 1); x++) {
-			tiersStr += ", " + tiers[x].username;
-		}
-		tiersStr += " and " + tiers[(tiers.length - 1)].username;
-		my_io.sockets.emit('outcome', tiersStr + " tied with " + tiers[0].weapon);
-	}
-
-
-
-
-	function showPlayers() {
-        // Emits message of number of active players.
-        my_io.sockets.emit('showPlayers', players.length + ' Active Players')
+    // Generates a single string if only one of the two arrays has items.
+    else if (losers.length > 0) {
+        losStr = makeNameString(losers);
+        outcomeStr += fillerStr1 + losers[0].weapon + " " + losStr;
     }
-
-
-
-
-    function waiting() {
-        // Emits message of number of players still to submit their choice.
-        var remaining = players.length - submits;
-        my_io.sockets.emit('wait', 'Players waiting on: ' + remaining)
+    else if (losers2.length > 0) {
+        los2Str = makeNameString(losers2);
+        outcomeStr += fillerStr2 + losers2[0].weapon + " " + los2Str;
     }
+    // Transmits message string.
+    my_io.sockets.emit('outcome', outcomeStr);
+}
 
-	module.exports = gameStart;
+
+
+
+function makeNameString(array) {
+    // Start of username string.
+    var nameString = "(";
+    // Loops through all but last item in array and
+    // adds username to combined string.
+    for (var x = 0; x < array.length - 1; x++) {
+        nameString += array[x].username + ", ";
+    }
+    // Adds last array item (without separator and closes it.
+    nameString += array[array.length - 1].username + ")";
+
+    return nameString;
+}
+
+
+
+
+function emitTies(tiers) {
+    // Loops through array and emits message of who tied.
+    var tiersStr = tiers[0].username;
+    for (var x = 1; x < (tiers.length - 1); x++) {
+        tiersStr += ", " + tiers[x].username;
+    }
+    tiersStr += " and " + tiers[(tiers.length - 1)].username;
+    my_io.sockets.emit('outcome', tiersStr + " tied with " + tiers[0].weapon);
+}
+
+
+
+
+function showPlayers() {
+    // Emits message of number of active players.
+    my_io.sockets.emit('showPlayers', players.length + ' Active Players')
+}
+
+
+
+
+function waiting() {
+    // Emits message of number of players still to submit their choice.
+    var remaining = players.length - submits;
+    my_io.sockets.emit('wait', 'Players waiting on: ' + remaining)
+}
+
+module.exports = gameStart;

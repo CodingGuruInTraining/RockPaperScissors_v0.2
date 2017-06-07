@@ -28,9 +28,10 @@ $('.weapons').click(function () {
 
 // Prompts user for a username until they submit one.
 var username = prompt("Enter your username:");
-while (username == "" || username == null) {
-    username = prompt("PLEASE enter your username:");
-}
+/////////// while (username == "" || username == null) {
+///////////     username = prompt("PLEASE enter your username:");
+/////////// }
+
 // Emits username to server.
 socket.emit('setUsername', username);
 
