@@ -1,11 +1,9 @@
 console.log("start of client script");
 $(function() {
     console.log("beginning of client script");
-    // var socket = io();
     $('.weapons').hide();
     $('#messageLog').empty();
     var gameNumber = 0;
-
     $('#drawbtn').click(function () {
         $('#drawbtn').fadeOut();
         gameNumber++;
@@ -18,7 +16,6 @@ $(function() {
         }
         $('.weapons').fadeIn();
     });
-
     $('.weapons').click(function () {
         weaponClick($(this));		// function in other js
         $('.weapons').fadeOut();

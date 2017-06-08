@@ -21,7 +21,8 @@ var fillers = [ " cuts ", " covers ", " crushes ", " poisons ", " smashes ", " d
 var my_io;
 
 
-// Declares initial game state.
+// Declares initial game states.
+var game_initialized = false;
 var game_in_progress = false;
 
 
@@ -48,6 +49,30 @@ function gameStart(io) {
             // Updates player counter on client.
             showPlayers();
         });
+
+
+
+
+
+        socket.on('canIplay', function() {
+            var returner;
+console.log('init: ' + game_initialized);
+console.log('prog: ' + game_in_progress);
+            if (!game_initialized) {
+                game_initialized = true;
+                returner = true;
+            }
+            else if (game_in_progress) {
+                returner = false;
+            }
+            else {
+                returner = true;
+            }
+console.log('returner: ' + returner);
+            socket.emit('playDecision', returner);
+        });
+
+
 
 
 
@@ -106,6 +131,9 @@ console.log('Server players: ' + players.length);
                 scissors.length = 0;
                 lizards.length = 0;
                 spocks.length = 0;
+
+                game_initialized = false;
+                game_in_progress = false;
 
                 showPlayers();
             }
